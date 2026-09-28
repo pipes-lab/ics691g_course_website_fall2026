@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICS 691G: Special Topics in Computational Genomics</title>
+    <style>
+        /* System fonts and core variables for a clean, academic look without external assets */
+        :root {
+            --bg-body: #f3f4f6;
+            --bg-container: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --primary: #0369a1;
+            --primary-hover: #075985;
+            --border: #e5e7eb;
+            --table-header: #f8fafc;
+            --table-row-alt: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            padding-bottom: 2rem;
+        }
+
+        /* Top Navigation Menu */
+        nav {
+            background-color: var(--bg-container);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 0 0.75rem;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        nav a:hover {
+            background-color: var(--bg-body);
+            color: var(--primary-hover);
+        }
+
+        /* Main Container */
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            background-color: var(--bg-container);
+            padding: 2rem 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Typography and Headers */
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tables */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--table-header);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--table-row-alt);
+        }
+
+        /* Utility */
+        .practice-link {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+        }
+        
+        .practice-link:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            main {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            nav a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+
+            h1 { font-size: 1.75rem; }
+            .subtitle { font-size: 1.1rem; }
+            
+            th, td {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#at-a-glance">Course at a glance</a>
+        <a href="#schedule">Weekly schedule</a>
+        <a href="#grades">How grades work</a>
+        <a href="#policies">Policies</a>
+        <a href="#practice">Practice</a>
+    </nav>
+
+    <main>
+        <header>
+            <h1>ICS 691G: Special Topics in Computational Genomics</h1>
+            <div class="subtitle">Instructor: Lenore Pipes</div>
+            <div class="subtitle">Semester: Fall 2026</div>
+        </header>
+
+        <section id="at-a-glance">
+            <h2>Course at a glance</h2>
+            <ul>
+                <li><strong>Class Meetings:</strong> Pacific Ocean Science & Technology (POST) 325 Tues/Thurs 9am-10:15am</li>
+                <li><strong>Office Location:</strong> LSB 210</li>
+                <li><strong>Office Hours:</strong> POST 314F Tues/Thurs 10:15am-11am</li>
+                <li><strong>Contact Information:</strong> lpipes@hawaii.edu</li>
+            </ul>
+        </section>
+
+        <section id="schedule">
+            <h2>Weekly schedule</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Topic</th>
+                            <th>Reading</th>
+                            <th>What is due</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Tuesday:</strong> Intro to Course; UH HPC (Koa) Overview; SLURM Basics & Job Parallelization<br><strong>Thursday:</strong> Naive String Search; Complexity Analysis; Intro to KMP</td>
+                            <td></td>
+                            <td>HW0 (Onboarding & Concepts) Assigned</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Tuesday:</strong> Exact Pattern Matching: Knuth-Morris-Pratt (KMP)<br><strong>Thursday:</strong> Exact Pattern Matching: Boyer-Moore; Introduction to Suffix Trees</td>
+                            <td></td>
+                            <td>HW0 Due; HW1 (Optional)</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>Tuesday:</strong> Suffix Trees: Construction (Ukkonen's Algorithm theory)<br><strong>Thursday:</strong> Suffix Trees: Applications; Suffix Arrays</td>
+                            <td></td>
+                            <td>HW2 (Suffix Structures) (Optional)</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Tuesday:</strong> EXAM 1 (Covers Weeks 1-3)<br><strong>Thursday:</strong> Introduction to Sequence Alignment: Edit Distance, Biological Motivation</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>Tuesday:</strong> Global Alignment: Needleman-Wunsch Algorithm (DP); Scoring Matrices (Theory)<br><strong>Thursday:</strong> Local Alignment: Smith-Waterman Algorithm (DP)</td>
+                            <td></td>
+                            <td>HW3 (Alignment Algs) (Optional)</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><strong>Tuesday:</strong> Probability & Statistics Review for Bioinformatics; Information Theory Basics<br><strong>Thursday:</strong> Introduction to Hidden Markov Models (HMMs): Definitions, Markov Chains</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><strong>Tuesday:</strong> HMM Algorithms: Forward Algorithm, Viterbi Algorithm (Decoding)<br><strong>Thursday:</strong> HMM Algorithms: Baum-Welch Algorithm (Training); Applications (i.e., Gene Finding)</td>
+                            <td></td>
+                            <td>Project Proposal Due (Oct 6)</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><strong>Tuesday:</strong> EXAM 2 (Covers Weeks 4-7)<br><strong>Thursday:</strong> Next-Generation Sequencing (NGS) Intro; Read Mapping Problem; Hashing & k-mers</td>
+                            <td></td>
+                            <td>HW4 (HMMs) (Optional)</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><strong>Tuesday:</strong> Burrows-Wheeler Transform (BWT) and FM-Index: Theory and Construction<br><strong>Thursday:</strong> Read Alignment Algorithms using BWT/FM-Index (i.e., Bowtie/BWA conceptual basis)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><strong>Tuesday:</strong> Read Alignment Challenges: Indels, Errors; Data Structures for Mapping<br><strong>Thursday:</strong> Genome Assembly: Graph Theory Basics; Overlap-Layout-Consensus vs De Bruijn Graphs</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td><strong>Tuesday:</strong> NO CLASS (Election Day)<br><strong>Thursday:</strong> Genome Assembly: De Bruijn Graph Algorithms & Data Structures</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td><strong>Tuesday:</strong> Assembly Challenges: Repeats, Errors, Scaffolding<br><strong>Thursday:</strong> EXAM 3 (Covers Weeks 7-11)</td>
+                            <td></td>
+                            <td>HW5 (BWT/Assembly) (Optional)</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td><strong>Tuesday:</strong> Phylogenetics: Tree Concepts, Distance Metrics<br><strong>Thursday:</strong> Distance-Based Tree Building: UPGMA, Neighbor-Joining (Algorithms & Math)</td>
+                            <td></td>
+                            <td>Project Mid-term Checkpoint (Brief demo/status)</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td><strong>Tuesday:</strong> Character-Based Tree Building: Maximum Parsimony (Algorithmic aspects)<br><strong>Thursday:</strong> NO CLASS (Thanksgiving Recess)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td><strong>Tuesday:</strong> Advanced Probabilistic Phylogenetics: Introduction to Maximum Likelihood (Models of Evolution, Algorithms)<br><strong>Thursday:</strong> Topics: DNA Language Models (Transformers, Attention); Recent Advances (i.e., Yun Song et al.)</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td><strong>Tuesday:</strong> Course Wrap-up; Review for Final Exam; Presentations<br><strong>Thursday:</strong> Last Day of Instruction / Presentations</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Finals</td>
+                            <td><strong>Final Exam:</strong> December 17, 9:45-11:45am</td>
+                            <td></td>
+                            <td>Final Project Due: December 18 5pm</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="grades">
+            <h2>How grades work</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Weight</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HW0 (Onboarding & Concept Check)</td>
+                            <td>5%</td>
+                            <td>Required to ensure development environment, access to Koa (UH HPC), and foundational concepts are solid.</td>
+                        </tr>
+                        <tr>
+                            <td>Midterm Exams (3 Total)</td>
+                            <td>45%</td>
+                            <td>15% each. Regularly assesses understanding of algorithmic and theoretical concepts.</td>
+                        </tr>
+                        <tr>
+                            <td>Final Exam (Cumulative)</td>
+                            <td>25%</td>
+                            <td>Comprehensive, heavily weighted toward advanced topics covered in final weeks (Weeks 13-15).</td>
+                        </tr>
+                        <tr>
+                            <td>Individual Course Project</td>
+                            <td>25%</td>
+                            <td>Proposal (2.5%), Mid-term Checkpoint (2.5%), Final Report & Code (10%), Final Presentation (10%).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="policies">
+            <h2>Policies</h2>
+            
+            <h3>Late Policy & Make-Ups</h3>
+            <p>HW0 late submissions lose 10% per day, with a maximum of 3 late days total. Project components must be submitted on time. No make-up midterms will be offered except in the case of extreme, prolonged, documented emergencies.</p>
+
+            <h3>Lecture Recordings & Attendance</h3>
+            <p>All lectures are recorded. Attendance is taken to determine recording access. Immediate access to recordings is only available to students present for that specific session. If you are absent, access is delayed until the day before the relevant midterm, or at the start of the reading period for the final. Exceptions granting immediate access are made for excusable absences (e.g., documented illness, university travel, severe emergencies, religious observances) via an email request.</p>
+
+            <h3>Homework Assignments (HW1-HW5)</h3>
+            <p>HW1 through HW5 are completely optional and will not be graded. However, they are highly recommended as they serve as primary study guides for mid-terms and the final exam.</p>
+
+            <h3>Academic Honesty</h3>
+            <p>All work submitted must be your own. Discussing concepts with classmates is encouraged, but final work (code, written answers, reports, exams) must be done individually. Any external sources must be properly cited. Plagiarism or cheating is handled according to the University of Hawai'i Student Conduct Code.</p>
+
+            <h3>Disability Access</h3>
+            <p>Students needing accommodations are encouraged to contact the KOKUA Program (Student Services Center, Room 013, 808-956-7511, kokua@hawaii.edu) as soon as possible for timely implementation.</p>
+
+            <h3>Communication</h3>
+            <p>Check the course website regularly for announcements. Post questions in the 'Discussions' tab. Allow up to 24-48 hours for email responses, especially on weekends.</p>
+        </section>
+
+        <section id="practice">
+            <h2>Practice</h2>
+            <p>Click below to test your understanding of the course concepts.</p>
+            <a href="quiz.html" class="practice-link">Practice quiz</a>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Lenore Pipes</p>
+        </footer>
+    </main>
+</body>
+</html>

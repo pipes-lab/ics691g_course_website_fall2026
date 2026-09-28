@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICS691G: Sequence Alignment Self-Check Quiz</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f3f4f6;
+      color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem;
+    }
+    header, footer { text-align: center; padding: 1rem 0; }
+    header h1 { font-size: 1.8rem; color: #1e3a8a; margin-bottom: 0.25rem; }
+    header p { font-size: 1.1rem; color: #4b5563; font-weight: 600; }
+    main {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    .progress {
+      font-size: 0.95rem;
+      color: #6b7280;
+      font-weight: bold;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .question-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 1.25rem;
+      color: #111827;
+    }
+    .options { display: flex; flex-direction: column; gap: 0.75rem; }
+    .option-btn {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      text-align: left;
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) { background: #eff6ff; border-color: #93c5fd; }
+    .option-btn .key-badge {
+      background: #e5e7eb;
+      color: #374151;
+      font-weight: bold;
+      font-size: 0.85rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .option-btn.correct { background: #dcfce7; border-color: #22c55e; color: #14532d; }
+    .option-btn.correct .key-badge { background: #86efac; color: #14532d; }
+    .option-btn.incorrect { background: #fee2e2; border-color: #ef4444; color: #7f1d1d; }
+    .option-btn.incorrect .key-badge { background: #fca5a5; color: #7f1d1d; }
+    .explanation-box {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      line-height: 1.4;
+      display: none;
+    }
+    .explanation-box.correct-bg { background: #f0fdf4; border-left: 4px solid #22c55e; color: #166534; }
+    .explanation-box.incorrect-bg { background: #fef2f2; border-left: 4px solid #ef4444; color: #991b1b; }
+    .action-btn {
+      margin-top: 1.25rem;
+      width: 100%;
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.9rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+    .action-btn:hover { background: #1d4ed8; }
+    .results-card { text-align: center; padding: 1rem 0; }
+    .score-display { font-size: 2.5rem; font-weight: 800; color: #1e3a8a; margin: 1rem 0; }
+    footer { font-size: 0.95rem; color: #6b7280; }
+    @media (max-width: 480px) {
+      header h1 { font-size: 1.4rem; }
+      .question-text { font-size: 1.1rem; }
+      .option-btn { font-size: 0.95rem; padding: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ICS691G</h1>
+    <p>Topic: Sequence Alignment</p>
+  </header>
+
+  <main id="quiz-container">
+    <div id="quiz-view">
+      <div class="progress" id="progress-text">Question 1 of 10</div>
+      <div class="question-text" id="question-text">Loading question...</div>
+      <div class="options" id="options-container"></div>
+      <div class="explanation-box" id="explanation-box"></div>
+      <button class="action-btn" id="next-btn" onclick="nextQuestion()">Next (Press Enter ↵)</button>
+    </div>
+
+    <div id="results-view" class="results-card" style="display: none;">
+      <h2>Quiz Complete!</h2>
+      <div class="score-display" id="final-score">0 / 10</div>
+      <p id="feedback-msg" style="font-size: 1.1rem; margin-bottom: 1.5rem; color: #4b5563;"></p>
+      <button class="action-btn" id="restart-btn" style="display: block;" onclick="resetQuiz()">Try again (Press Enter ↵)</button>
+    </div>
+  </main>
+
+  <footer>
+    Made by Lenore Pipes with Gemini
+  </footer>
+
+  <script>
+    // EDIT QUESTIONS HERE BY HAND
+    const questions = [
+      {
+        question: "What is the primary objective of the Needleman-Wunsch algorithm?",
+        options: [
+          "To find the optimal global alignment between two sequences.",
+          "To find the optimal local alignment between two sequences.",
+          "To align multiple protein sequences simultaneously.",
+          "To perform fast heuristic database searches like BLAST."
+        ],
+        answer: 0,
+        explanation: "Needleman-Wunsch uses dynamic programming to construct an optimal global alignment across the entire length of two sequences."
+      },
+      {
+        question: "Which feature distinguishes Smith-Waterman local alignment from Needleman-Wunsch global alignment?",
+        options: [
+          "Dynamic programming matrix cell values cannot drop below zero.",
+          "Traceback always begins at the bottom-right cell of the matrix.",
+          "It uses an affine gap penalty instead of a linear gap penalty.",
+          "The first row and column are initialized with cumulative gap penalties."
+        ],
+        answer: 0,
+        explanation: "Smith-Waterman caps negative alignment scores at zero to isolate local regions of high similarity."
+      },
+      {
+        question: "In global pairwise sequence alignment, what does a diagonal step during traceback signify?",
+        options: [
+          "An insertion or deletion event in one sequence.",
+          "Aligning a character from sequence 1 with a character from sequence 2.",
+          "A free end-gap penalty assignment.",
+          "The termination point of a local alignment."
+        ],
+        answer: 1,
+        explanation: "Moving diagonally pairs one residue or nucleotide from the first sequence with one from the second sequence."
+      },
+      {
+        question: "For a gap penalty g (where g is negative), what is the value initialized at cell (0, j) in Needleman-Wunsch?",
+        options: ["0", "j × g", "j + g", "g^j"],
+        answer: 1,
+        explanation: "The initial row in global alignment represents aligning characters against leading gaps, accumulating penalties proportionally."
+      },
+      {
+        question: "During traceback, what does encountering a cell with multiple equal maximum incoming paths imply?",
+        options: [
+          "The alignment algorithm failed to converge.",
+          "Multiple distinct optimal alignments exist with the exact same score.",
+          "The scoring matrix parameters are invalid.",
+          "The alignment must be recomputed using local alignment."
+        ],
+        answer: 1,
+        explanation: "Multiple equal path choices leading into a cell signify that distinct optimal alignments tie for the top score."
+      },
+      {
+        question: "Why are affine gap penalties biologically preferred over linear gap penalties?",
+        options: [
+          "They reduce matrix calculation complexity to linear time.",
+          "Opening a gap costs more than extending it, matching natural mutation patterns.",
+          "They eliminate the need for traceback pointers in memory.",
+          "They prevent gaps from occurring within conserved domains."
+        ],
+        answer: 1,
+        explanation: "Indel events usually occur in contiguous chunks, so opening a gap incurs a higher cost than extending an existing one."
+      },
+      {
+        question: "Which substitution matrix is standard for aligning moderately divergent protein sequences?",
+        options: ["BLOSUM80", "PAM30", "BLOSUM62", "Identity Matrix"],
+        answer: 2,
+        explanation: "BLOSUM62 is the default matrix optimized for general protein sequence similarity searches."
+      },
+      {
+        question: "Where does the traceback step start in the Smith-Waterman local alignment algorithm?",
+        options: [
+          "At cell (0,0) in the top-left corner.",
+          "At cell (M,N) in the bottom-right corner.",
+          "At the highest-scoring cell anywhere in the dynamic programming matrix.",
+          "At the first cell in the matrix containing a value of zero."
+        ],
+        answer: 2,
+        explanation: "Smith-Waterman traceback begins at the maximum score in the entire matrix and ends when reaching a cell scoring zero."
+      },
+      {
+        question: "What is the time complexity of aligning two sequences of lengths M and N using basic dynamic programming?",
+        options: ["O(M + N)", "O(M × N)", "O(2^(M + N))", "O((M × N)²)"],
+        answer: 1,
+        explanation: "Pairwise dynamic programming fills an M-by-N grid, taking execution time proportional to M multiplied by N."
+      },
+      {
+        question: "How is percent identity defined for an aligned pair of sequences?",
+        options: [
+          "Total score divided by sequence length.",
+          "Percentage of aligned positions that contain identical characters.",
+          "Ratio of match scores to gap penalties.",
+          "Fraction of non-gapped positions with conservative substitutions."
+        ],
+        answer: 1,
+        explanation: "Percent identity measures exact character matches divided by the total number of aligned positions."
+      }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let answered = false;
+    let currentQuestions = [...questions];
+
+    function loadQuestion() {
+      answered = false;
+      const q = currentQuestions[currentIndex];
+      document.getElementById('progress-text').textContent = `Question ${currentIndex + 1} of ${currentQuestions.length}`;
+      document.getElementById('question-text').textContent = q.question;
+      
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+      
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="key-badge">${idx + 1}</span> <span>${opt}</span>`;
+        btn.onclick = () => selectAnswer(idx);
+        optionsContainer.appendChild(btn);
+      });
+
+      const expBox = document.getElementById('explanation-box');
+      expBox.style.display = 'none';
+      expBox.className = 'explanation-box';
+      
+      const nextBtn = document.getElementById('next-btn');
+      nextBtn.style.display = 'none';
+    }
+
+    function selectAnswer(selectedIdx) {
+      if (answered) return;
+      answered = true;
+
+      const q = currentQuestions[currentIndex];
+      const buttons = document.querySelectorAll('.option-btn');
+      const expBox = document.getElementById('explanation-box');
+      const isCorrect = selectedIdx === q.answer;
+
+      if (isCorrect) {
+        score++;
+        buttons[selectedIdx].classList.add('correct');
+        expBox.classList.add('correct-bg');
+        expBox.innerHTML = `<strong>Correct!</strong> ${q.explanation}`;
+      } else {
+        buttons[selectedIdx].classList.add('incorrect');
+        buttons[q.answer].classList.add('correct');
+        expBox.classList.add('incorrect-bg');
+        expBox.innerHTML = `<strong>Incorrect.</strong> ${q.explanation}`;
+      }
+
+      buttons.forEach(b => b.disabled = true);
+      expBox.style.display = 'block';
+      document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function nextQuestion() {
+      if (!answered) return;
+      currentIndex++;
+      if (currentIndex < currentQuestions.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('quiz-view').style.display = 'none';
+      document.getElementById('results-view').style.display = 'block';
+      document.getElementById('final-score').textContent = `${score} / ${currentQuestions.length}`;
+      
+      const msg = score >= 8 ? "Excellent understanding of sequence alignment!" :
+                  score >= 5 ? "Good effort! Review the concepts and try again." :
+                  "Keep practicing! Focus on NW and SW algorithm steps.";
+      document.getElementById('feedback-msg').textContent = msg;
+    }
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function resetQuiz() {
+      score = 0;
+      currentIndex = 0;
+      shuffleArray(currentQuestions);
+      document.getElementById('results-view').style.display = 'none';
+      document.getElementById('quiz-view').style.display = 'block';
+      loadQuestion();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (document.getElementById('results-view').style.display === 'block') {
+        if (e.key === 'Enter') resetQuiz();
+        return;
+      }
+
+      if (!answered) {
+        if (['1', '2', '3', '4'].includes(e.key)) {
+          const idx = parseInt(e.key, 10) - 1;
+          selectAnswer(idx);
+        }
+      } else if (e.key === 'Enter') {
+        nextQuestion();
+      }
+    });
+
+    // Start quiz
+    loadQuestion();
+  </script>
+</body>
+</html>
